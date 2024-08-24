@@ -20,6 +20,26 @@ const config: Config = {
       backgroundColor: {
         primary: "#2A59FE",
       },
+      textColor: {
+        primary: "#2A59FE",
+      },
+      borderColor: {
+        primary: "#2A59FE",
+      },
+      keyframes: {
+        slideDown: {
+          "0%": { transform: "translateY(-20px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        slideUp: {
+          "0%": { transform: "translateY(20px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+      },
+      animation: {
+        slideDown: "slideDown 0.5s ease-out forwards",
+        slideUp: "slideUp 0.5s ease-out forwards",
+      },
     },
   },
   plugins: [],
