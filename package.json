@@ -7,24 +7,24 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "prepare": "husky install"
   },
   "dependencies": {
+    "next": "14.2.6",
     "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.6"
+    "react-dom": "^18"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@commitlint/cli": "^19.4.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "eslint": "^8",
-    "eslint-config-next": "14.0.3",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.3",
     "eslint-config-prettier": "latest",
     "eslint-import-resolver-typescript": "latest",
     "eslint-plugin-import": "latest",
@@ -32,6 +32,10 @@
     "eslint-plugin-prettier": "latest",
     "eslint-plugin-react": "latest",
     "eslint-plugin-react-hooks": "latest",
-    "prettier": "latest"
+    "husky": "^8.0.3",
+    "postcss": "^8",
+    "prettier": "latest",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   }
 }
