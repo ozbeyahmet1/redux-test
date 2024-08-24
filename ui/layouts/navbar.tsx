@@ -9,11 +9,11 @@ export default function Navbar() {
   return (
     <header className="bg-primary h-auto lg:h-12 w-full px-6 lg:px-0 fixed py-4 lg:py-2 flex items-center">
       <div className="container mx-auto ">
-        <div className="flex items-center">
-          <div className="flex-1">
+        <div className="flex items-center gap-7">
+          <div className="flex-[1.2]">
             <Logo />
           </div>
-          <div className="hidden flex-[3.5] lg:flex">
+          <div className="hidden flex-[3.8] lg:flex">
             <Input
               label="Username"
               placeholder="Search"
