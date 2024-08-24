@@ -1,6 +1,7 @@
 "use client";
 
 import { RootState } from "@/state/store";
+import Navbar from "@layouts/navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { close, open } from "../state/slices/exampleSlice";
 export default function Home() {
@@ -15,10 +16,8 @@ export default function Home() {
     dispatch(close());
   };
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <p>Value: {value ? "True" : "False"}</p>
-      <button onClick={handleOpen}>Open</button>
-      <button onClick={handleClose}>Close</button>
+    <main className="">
+      <Navbar />
     </main>
   );
 }
