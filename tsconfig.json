@@ -19,7 +19,8 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@layouts/*": ["./ui/layouts/*"]
+      "@layouts/*": ["./ui/layouts/*"],
+      "@components/*": ["./ui/components/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".eslintrc.cjs", ".next/types/**/*.ts", "jest.config.js"],
