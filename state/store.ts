@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE, persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import cartReducer from "./slices/cartSlice"; // Cart reducer import edin
+import cartReducer from "./slices/cartSlice";
 
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["persistedCartReducer"], // exampleReducer'i persist'e dahil etmeyin
+  blacklist: ["persistedCartReducer"],
 };
 
 const persistedCartReducer = persistReducer(persistConfig, cartReducer);
