@@ -12,6 +12,7 @@ interface MultiSelectProps {
   name: string;
   onChange: (selectedValues: string[]) => void;
   MultiSelectName: string;
+  loading: boolean;
 }
 
 /**
@@ -24,7 +25,7 @@ interface MultiSelectProps {
  * @param {Function} props.onChange - The function to be called when the selected values change.
  * @returns {JSX.Element} The rendered multi-select component.
  */
-export default function MultiSelect({ options, name, onChange, MultiSelectName }: MultiSelectProps) {
+export default function MultiSelect({ options, name, onChange, MultiSelectName, loading }: MultiSelectProps) {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
   const handleChange = (value: string) => {
@@ -58,37 +59,46 @@ export default function MultiSelect({ options, name, onChange, MultiSelectName }
               placeholder="Search"
             />
           </div>
+          {loading ? (
+            <div className=" flex flex-col gap-3 h-[130px] overflow-auto">
+              {Array.from({ length: 12 }).map((_, index) => (
+                <div className="w-3/4 bg-gray-300 h-5 animate-pulse rounded-sm text-transparent" key={index}>
+                  s
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className=" flex flex-col gap-3 h-[130px] overflow-auto">
+              {options.map((option) => (
+                <div key={option.value} className="flex items-center gap-2 h-5">
+                  <label
+                    htmlFor={option.value}
+                    className={`${selectedValues.includes(option.value) && `bg-primary`} h-5 rounded-md`}>
+                    <div className="cursor-pointer w-5 h-5 flex items-center justify-center border-2 rounded-md border-primary border-solid">
+                      <input
+                        type="checkbox"
+                        name={name}
+                        id={option.value}
+                        value={option.value}
+                        checked={selectedValues.includes(option.value)}
+                        onChange={() => handleChange(option.value)}
+                        className="cursor-pointer form-checkbox text-blue-600 appearance-none border-1 border-blue-500 w-4 h-4 rounded-sm checked:bg-primary  p-[6px] transition-all duration-300"
+                      />
+                      {selectedValues.includes(option.value) && (
+                        <p className="static h-5 w-full -ml-3 mt-1">
+                          <TiTick fill="white" />
+                        </p>
+                      )}
+                    </div>
+                  </label>
 
-          <div className=" flex flex-col gap-3 h-[130px] overflow-auto">
-            {options.map((option) => (
-              <div key={option.value} className="flex items-center gap-2 h-5">
-                <label
-                  htmlFor={option.value}
-                  className={`${selectedValues.includes(option.value) && `bg-primary`} h-5 rounded-md`}>
-                  <div className="cursor-pointer w-5 h-5 flex items-center justify-center border-2 rounded-md border-primary border-solid">
-                    <input
-                      type="checkbox"
-                      name={name}
-                      id={option.value}
-                      value={option.value}
-                      checked={selectedValues.includes(option.value)}
-                      onChange={() => handleChange(option.value)}
-                      className="cursor-pointer form-checkbox text-blue-600 appearance-none border-1 border-blue-500 w-4 h-4 rounded-sm checked:bg-primary  p-[6px] transition-all duration-300"
-                    />
-                    {selectedValues.includes(option.value) && (
-                      <p className="static h-5 w-full -ml-3 mt-1">
-                        <TiTick fill="white" />
-                      </p>
-                    )}
-                  </div>
-                </label>
-
-                <label htmlFor={option.value} className="text-[#333333] text-sm cursor-pointer">
-                  {option.label}
-                </label>
-              </div>
-            ))}
-          </div>
+                  <label htmlFor={option.value} className="text-[#333333] text-sm cursor-pointer">
+                    {option.label}
+                  </label>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {isCollapsed && (

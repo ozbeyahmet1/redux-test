@@ -148,12 +148,14 @@ export default function Home() {
               name="product-sorting"
               onChange={handleMultiSelectChange(setSelectedBrands)}
               MultiSelectName="Brands"
+              loading={loading}
             />
             <MultiSelect
               options={models}
               name="product-sorting"
               onChange={handleMultiSelectChange(setSelectedModels)}
               MultiSelectName="Models"
+              loading={loading}
             />
           </div>
           <div className="flex-[3.8] w-full">
