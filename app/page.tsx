@@ -1,6 +1,7 @@
 "use client";
 
 import Card from "@/ui/components/card";
+import SkeletonCard from "@/ui/components/cardSkeleton";
 import Cart from "@/ui/components/cart";
 import MultiSelect, { MultiSelectOption } from "@/ui/components/multiSelect";
 import RadioGroup, { RadioGroupOption } from "@/ui/components/radioGroup";
@@ -135,18 +136,19 @@ export default function Home() {
           </div>
 
           <div className="flex-[3.8] w-full gap-5 grid grid-auto-flow grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {!loading &&
-              products.map((product) => (
-                <Card
-                  key={product.id}
-                  image={{
-                    src: product.image,
-                    alt: product.name,
-                  }}
-                  name={product.name}
-                  price={product.price}
-                />
-              ))}
+            {loading
+              ? Array.from({ length: 12 }).map((_, index) => <SkeletonCard key={index} />)
+              : products.map((product) => (
+                  <Card
+                    key={product.id}
+                    image={{
+                      src: product.image,
+                      alt: product.name,
+                    }}
+                    name={product.name}
+                    price={product.price}
+                  />
+                ))}
           </div>
 
           <div className="flex-1 w-full flex flex-col gap-4">
