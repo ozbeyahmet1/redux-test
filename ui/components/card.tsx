@@ -12,6 +12,7 @@
  * @returns The rendered Card component.
  */
 import Image from "next/image";
+import Link from "next/link";
 
 interface Image {
   src: string;
@@ -31,10 +32,13 @@ export default function Card({ image, name, price, onClick, addedToCart }: CardP
       <div className="w-full  bg-gray-500">
         <Image src={image.src} alt={image.alt} width={640} height={480} />
       </div>
+
       <div className="flex flex-col gap-3 pt-4 h-full items-start w-full">
         <p className="text-primary text-start">{price}₺</p>
         <div className="flex items-start justify-between flex-col h-full w-full">
-          <p>{name}</p>
+          <Link href={"/products/" + name}>
+            <p className="hover:underline duration-300">{name}</p>
+          </Link>
           <button
             onClick={onClick}
             className={`w-full  h-8 rounded-md text-white  hover:text-primary hover:border-primary border-2 border-solid duration-300 ${addedToCart ? "bg-green-400" : "bg-[#2A59FE] hover:bg-white"}`}>
