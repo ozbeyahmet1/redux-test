@@ -11,7 +11,9 @@ export default function Navbar() {
       <div className="container mx-auto ">
         <div className="flex items-center gap-7">
           <div className="flex-[1.2]">
-            <Logo />
+            <a href="/">
+              <Logo />
+            </a>
           </div>
           <div className="hidden flex-[3.8] lg:flex">
             <Input
