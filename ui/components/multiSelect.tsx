@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaChevronCircleDown } from "react-icons/fa";
 import { IoSearchSharp } from "react-icons/io5";
 import { TiTick } from "react-icons/ti";
+
 export interface MultiSelectOption {
   label: string;
   value: string;
@@ -16,7 +17,7 @@ interface MultiSelectProps {
 }
 
 /**
- * Renders a multi-select component.
+ * Renders a multi-select component with search functionality.
  *
  * @component
  * @param {Object} props - The component props.
@@ -27,6 +28,8 @@ interface MultiSelectProps {
  */
 export default function MultiSelect({ options, name, onChange, MultiSelectName, loading }: MultiSelectProps) {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleChange = (value: string) => {
     setSelectedValues((prevSelected) => {
@@ -37,7 +40,8 @@ export default function MultiSelect({ options, name, onChange, MultiSelectName, 
     });
   };
 
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const filteredOptions = options.filter((option) => option.label.toLowerCase().includes(searchQuery.toLowerCase()));
+
   return (
     <div>
       <div className="flex flex-col">
@@ -47,20 +51,22 @@ export default function MultiSelect({ options, name, onChange, MultiSelectName, 
             className={`flex lg:hidden text-primary ${
               isCollapsed ? "rotate-180" : "rotate-0"
             } transition-all duration-300`}
-            onClick={() => setIsCollapsed(() => !isCollapsed)}
+            onClick={() => setIsCollapsed(!isCollapsed)}
           />
         </div>
-        <div className="hidden bg-white   p-4 lg:flex flex-col gap-4 shadow-2xl">
+        <div className="hidden bg-white p-4 lg:flex flex-col gap-4 shadow-2xl">
           <div className="bg-gray-100 p-2 flex items-center gap-2">
             <IoSearchSharp fill="000000" size={24} />
             <input
               type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="appearance-none bg-transparent border-none w-full placeholder:text-[#626B8B] placeholder:text-sm leading-tight focus:outline-none"
               placeholder="Search"
             />
           </div>
           {loading ? (
-            <div className=" flex flex-col gap-3 h-[130px] overflow-auto">
+            <div className="flex flex-col gap-3 h-[130px] overflow-auto">
               {Array.from({ length: 12 }).map((_, index) => (
                 <div className="w-3/4 bg-gray-300 h-5 animate-pulse rounded-sm text-transparent" key={index}>
                   s
@@ -68,8 +74,8 @@ export default function MultiSelect({ options, name, onChange, MultiSelectName, 
               ))}
             </div>
           ) : (
-            <div className=" flex flex-col gap-3 h-[130px] overflow-auto">
-              {options.map((option) => (
+            <div className="flex flex-col gap-3 h-[130px] overflow-auto">
+              {filteredOptions.map((option) => (
                 <div key={option.value} className="flex items-center gap-2 h-5">
                   <label
                     htmlFor={option.value}
@@ -82,7 +88,7 @@ export default function MultiSelect({ options, name, onChange, MultiSelectName, 
                         value={option.value}
                         checked={selectedValues.includes(option.value)}
                         onChange={() => handleChange(option.value)}
-                        className="cursor-pointer form-checkbox text-blue-600 appearance-none border-1 border-blue-500 w-4 h-4 rounded-sm checked:bg-primary  p-[6px] transition-all duration-300"
+                        className="cursor-pointer form-checkbox text-blue-600 appearance-none border-1 border-blue-500 w-4 h-4 rounded-sm checked:bg-primary p-[6px] transition-all duration-300"
                       />
                       {selectedValues.includes(option.value) && (
                         <p className="static h-5 w-full -ml-3 mt-1">
@@ -106,7 +112,17 @@ export default function MultiSelect({ options, name, onChange, MultiSelectName, 
             className={`flex bg-white p-4 lg:hidden flex-col gap-3 shadow-2xl h-[130px] overflow-auto ${
               isCollapsed ? "animate-slideDown" : "animate-slideUp"
             }`}>
-            {options.map((option) => (
+            <div className="bg-gray-100 p-2 flex items-center gap-2">
+              <IoSearchSharp fill="000000" size={24} />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="appearance-none bg-transparent border-none w-full placeholder:text-[#626B8B] placeholder:text-sm leading-tight focus:outline-none"
+                placeholder="Search"
+              />
+            </div>
+            {filteredOptions.map((option) => (
               <div key={option.value} className="flex items-center gap-2 h-5">
                 <label
                   htmlFor={option.value}
@@ -119,7 +135,7 @@ export default function MultiSelect({ options, name, onChange, MultiSelectName, 
                       value={option.value}
                       checked={selectedValues.includes(option.value)}
                       onChange={() => handleChange(option.value)}
-                      className="cursor-pointer form-checkbox text-blue-600 appearance-none border-1 border-blue-500 w-4 h-4 rounded-sm checked:bg-primary  p-[6px] transition-all duration-300"
+                      className="cursor-pointer form-checkbox text-blue-600 appearance-none border-1 border-blue-500 w-4 h-4 rounded-sm checked:bg-primary p-[6px] transition-all duration-300"
                     />
                     {selectedValues.includes(option.value) && (
                       <p className="static h-5 w-full -ml-3 mt-1">
