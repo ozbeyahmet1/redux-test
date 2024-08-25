@@ -21,9 +21,11 @@ export interface CardProps {
   name: string;
   price: string;
   image: Image;
+  onClick: () => void;
+  addedToCart: boolean;
 }
 
-export default function Card({ image, name, price }: CardProps) {
+export default function Card({ image, name, price, onClick, addedToCart }: CardProps) {
   return (
     <div className="w-full bg-white shadow-xl p-2 rounded-md flex flex-col animate-fade-in">
       <div className="w-full  bg-gray-500">
@@ -34,9 +36,9 @@ export default function Card({ image, name, price }: CardProps) {
         <div className="flex items-start justify-between flex-col h-full w-full">
           <p>{name}</p>
           <button
-            onClick={() => {}}
-            className="w-full bg-[#2A59FE] h-8 rounded-md text-white hover:bg-white hover:text-primary hover:border-primary border-2 border-solid duration-300">
-            Add to Cart
+            onClick={onClick}
+            className={`w-full  h-8 rounded-md text-white  hover:text-primary hover:border-primary border-2 border-solid duration-300 ${addedToCart ? "bg-green-400" : "bg-[#2A59FE] hover:bg-white"}`}>
+            {addedToCart ? "Added" : "Add To Cart"}
           </button>
         </div>
       </div>
