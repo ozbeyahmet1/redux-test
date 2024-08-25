@@ -7,7 +7,7 @@ import Input from "../components/input";
 export default function Navbar() {
   const [username, setUsername] = useState("");
   return (
-    <header className="bg-primary h-auto lg:h-12 w-full px-6 lg:px-0 fixed py-4 lg:py-2 flex items-center">
+    <header className="bg-primary h-auto lg:h-12 w-full px-6 lg:px-0 fixed py-4 lg:py-2 flex items-center z-50">
       <div className="container mx-auto ">
         <div className="flex items-center gap-7">
           <div className="flex-[1.2]">

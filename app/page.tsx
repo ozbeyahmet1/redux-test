@@ -176,7 +176,7 @@ export default function Home() {
               <Pagination
                 currentPage={page}
                 totalPages={Math.ceil(totalProducts.length / 12)}
-                onPageChange={(page) => setPage(page)}
+                onPageChange={(selectedPage) => setPage(selectedPage)}
               />
             </div>
           </div>

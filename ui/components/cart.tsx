@@ -36,9 +36,11 @@ function CartItem({ name, price, onClickMinus, onClickPlus, count }: CartItemPro
           <FaMinus fill="#767676" size={12} />
         </button>
         <p className="bg-primary w-6 h-6 flex items-center text-white justify-center">{count}</p>
-        <button onClick={onClickPlus} className="w-6 h-6 bg-[#F3F4F6] flex items-center justify-center">
-          <FaPlus fill="#767676" size={12} />
-        </button>
+        <div>
+          <button onClick={onClickPlus} className="w-6 h-6 bg-[#F3F4F6] flex items-center justify-center">
+            <FaPlus fill="#767676" size={12} />
+          </button>
+        </div>
       </div>
     </div>
   );
