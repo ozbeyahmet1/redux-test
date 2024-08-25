@@ -1,15 +1,18 @@
 "use client";
 
+import { addToProduct, decreaseProductNumber, increaseProductNumber, selectTotalPrice } from "@/state/slices/cartSlice";
+import { AppDispatch, RootState } from "@/state/store";
 import Card from "@/ui/components/card";
 import SkeletonCard from "@/ui/components/cardSkeleton";
-import Cart from "@/ui/components/cart";
+import { CartItem } from "@/ui/components/cart";
 import MultiSelect, { MultiSelectOption } from "@/ui/components/multiSelect";
 import Pagination from "@/ui/components/pagination";
 import RadioGroup, { RadioGroupOption } from "@/ui/components/radioGroup";
 import TotalPrice from "@/ui/components/totalPrice";
-import useFetchProducts from "@/utils/useFetchProducts";
+import useFetchProducts, { Product } from "@/utils/useFetchProducts";
 import Navbar from "@layouts/navbar";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 /**
  * Represents the query parameters used for fetching products.
@@ -27,6 +30,21 @@ interface Query {
  * @returns JSX.Element
  */
 export default function Home() {
+  const dispatch = useDispatch<AppDispatch>();
+  const cart = useSelector((state: RootState) => state.cart);
+  const totalPrice = useSelector((state: RootState) => selectTotalPrice(state.cart));
+  const handleAddProduct = (product: Product) => {
+    dispatch(addToProduct(product));
+  };
+
+  const handleIncreaseQuantity = (productId: string) => {
+    dispatch(increaseProductNumber(productId));
+  };
+
+  const handleDecreaseQuantity = (productId: string) => {
+    dispatch(decreaseProductNumber(productId));
+  };
+
   const [selectedSortOption, setSelectedSortOption] = useState<string>("old-to-new");
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedModels, setSelectedModels] = useState<string[]>([]);
@@ -171,6 +189,8 @@ export default function Home() {
                       }}
                       name={product.name}
                       price={product.price}
+                      onClick={() => handleAddProduct(product)}
+                      addedToCart={cart.items.some((item) => item.id === product.id)}
                     />
                   ))}
             </div>
@@ -183,25 +203,24 @@ export default function Home() {
             </div>
           </div>
           <div className="flex-1 w-full flex flex-col gap-4">
-            <Cart
-              cartItems={[
-                {
-                  name: "iPhone 13 Pro Max 256Gb",
-                  price: 15000,
-                  count: 1,
-                  onClickMinus: () => {},
-                  onClickPlus: () => {},
-                },
-                {
-                  name: "Galaxy S21 Ultra 256Gb",
-                  price: 12000,
-                  count: 1,
-                  onClickMinus: () => {},
-                  onClickPlus: () => {},
-                },
-              ]}
-            />
-            <TotalPrice price={27000} />
+            {cart.items.length > 0 && (
+              <div className="p-2 bg-white shadow-2xl gap-4 flex flex-col">
+                {cart?.items?.map((cartItem) => {
+                  return (
+                    <CartItem
+                      count={cartItem.quantity}
+                      name={cartItem.name}
+                      onClickMinus={() => handleDecreaseQuantity(cartItem.id)}
+                      onClickPlus={() => handleIncreaseQuantity(cartItem.id)}
+                      price={cartItem.price}
+                      key={cartItem.id}
+                    />
+                  );
+                })}
+              </div>
+            )}
+
+            <TotalPrice price={totalPrice} />
           </div>
         </div>
       </div>

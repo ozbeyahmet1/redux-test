@@ -2,7 +2,7 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 
 interface CartItemProps {
   name: string;
-  price: number;
+  price: string;
   onClickMinus: () => void;
   onClickPlus: () => void;
   count: number;
@@ -24,7 +24,7 @@ export interface CartProps {
  * @param {number} props.count - The count of the item.
  * @returns {JSX.Element} The rendered CartItem component.
  */
-function CartItem({ name, price, onClickMinus, onClickPlus, count }: CartItemProps) {
+export function CartItem({ name, price, onClickMinus, onClickPlus, count }: CartItemProps) {
   return (
     <div className="flex justify-between text-sm items-start gap-4">
       <div>
