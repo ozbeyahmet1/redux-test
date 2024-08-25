@@ -4,6 +4,7 @@ import Card from "@/ui/components/card";
 import SkeletonCard from "@/ui/components/cardSkeleton";
 import Cart from "@/ui/components/cart";
 import MultiSelect, { MultiSelectOption } from "@/ui/components/multiSelect";
+import Pagination from "@/ui/components/pagination";
 import RadioGroup, { RadioGroupOption } from "@/ui/components/radioGroup";
 import TotalPrice from "@/ui/components/totalPrice";
 import useFetchProducts from "@/utils/useFetchProducts";
@@ -30,7 +31,8 @@ export default function Home() {
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedModels, setSelectedModels] = useState<string[]>([]);
   const [url, setUrl] = useState<string>("");
-
+  const [totalUrl, setTotalUrl] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
   const options: RadioGroupOption[] = [
     { label: "Old to new", value: "old-to-new" },
     { label: "New to old", value: "new-to-old" },
@@ -43,14 +45,15 @@ export default function Home() {
       sortBy: selectedSortOption,
       brands: selectedBrands,
       models: selectedModels,
-      page: 1,
-      limit: 10,
+      page: page,
+      limit: 12,
     };
     setUrl(queryToUrl(query));
-  }, [selectedSortOption, selectedBrands, selectedModels]);
+    setTotalUrl(totalQueryToUrl(query));
+  }, [selectedSortOption, selectedBrands, selectedModels, page]);
 
   const { products, loading } = useFetchProducts(url);
-
+  const { products: totalProducts } = useFetchProducts(totalUrl);
   // Generate unique brand options for MultiSelect
   const brands: MultiSelectOption[] = products.reduce<MultiSelectOption[]>((acc, product) => {
     if (!acc.find((option) => option.value === product.brand)) {
@@ -84,6 +87,7 @@ export default function Home() {
     <T extends string>(setSelectedValues: React.Dispatch<React.SetStateAction<T[]>>) =>
     (values: T[]) => {
       setSelectedValues(values);
+      setPage(1);
     };
 
   /**
@@ -106,10 +110,28 @@ export default function Home() {
     const pageParam = `page=${query.page}`;
     const limitParam = `limit=${query.limit}`;
     const sortByParam = `sortBy=${sortByMap[query.sortBy]}`;
-
     const params = [brandParam, modelParam, pageParam, limitParam, sortByParam]
       .filter((param) => param !== "")
       .join("&");
+
+    return `${baseUrl}?${params}`;
+  }
+
+  function totalQueryToUrl(query: Query): string {
+    const baseUrl = "https://5fc9346b2af77700165ae514.mockapi.io/products";
+
+    const sortByMap: { [key in Query["sortBy"]]: string } = {
+      "old-to-new": "createdAt&order=asc",
+      "new-to-old": "createdAt&order=desc",
+      "price-high-to-low": "price&order=desc",
+      "price-low-to-high": "price&order=asc",
+    };
+
+    const brandParam = query.brands.length > 0 ? `brand=${query.brands.join(",")}` : "";
+    const modelParam = query.models.length > 0 ? `model=${query.models.join(",")}` : "";
+    const limitParam = `limit=${query.limit}`;
+    const sortByParam = `sortBy=${sortByMap[query.sortBy]}`;
+    const params = [brandParam, modelParam, limitParam, sortByParam].filter((param) => param !== "").join("&");
 
     return `${baseUrl}?${params}`;
   }
@@ -134,23 +156,30 @@ export default function Home() {
               MultiSelectName="Models"
             />
           </div>
-
-          <div className="flex-[3.8] w-full gap-5 grid grid-auto-flow grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {loading
-              ? Array.from({ length: 12 }).map((_, index) => <SkeletonCard key={index} />)
-              : products.map((product) => (
-                  <Card
-                    key={product.id}
-                    image={{
-                      src: product.image,
-                      alt: product.name,
-                    }}
-                    name={product.name}
-                    price={product.price}
-                  />
-                ))}
+          <div className="flex-[3.8] w-full">
+            <div className="gap-5 grid grid-auto-flow grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {loading
+                ? Array.from({ length: 12 }).map((_, index) => <SkeletonCard key={index} />)
+                : products.map((product) => (
+                    <Card
+                      key={product.id}
+                      image={{
+                        src: product.image,
+                        alt: product.name,
+                      }}
+                      name={product.name}
+                      price={product.price}
+                    />
+                  ))}
+            </div>
+            <div className="flex items-center gap-2 mt-10 mb-20 w-full justify-center">
+              <Pagination
+                currentPage={page}
+                totalPages={Math.ceil(totalProducts.length / 12)}
+                onPageChange={(page) => setPage(page)}
+              />
+            </div>
           </div>
-
           <div className="flex-1 w-full flex flex-col gap-4">
             <Cart
               cartItems={[
