@@ -27,7 +27,7 @@ export default function Input({ placeholder = "", value, onChange, type = "text"
   return (
     <div className="bg-white px-4 h-9 items-center flex w-full lg:w-[380px]">
       <div className="flex items-center justify-center gap-2">
-        {Icon && <Icon className="text-[#626B8B] size-6" />}
+        {Icon && <Icon className="text-[#626B8B] size-6" data-testid="input-icon" />}
         <input
           className="appearance-none bg-transparent border-none w-full placeholder:text-[#626B8B] leading-tight focus:outline-none font-medium flex items-center justify-center"
           type={type}
